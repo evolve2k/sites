@@ -1,4 +1,5 @@
 require 'lru_redux'
+require 'sinatra'
 
 module Sites
 
