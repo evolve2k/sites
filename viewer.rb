@@ -23,14 +23,10 @@ module Sites
       "#{key}-#{rev}"
     end
 
-    def get_layout(wiki)
-      layout = wiki.file('layout.erb') || wiki.page('layout')
-      if layout
-        return layout.raw_data
-      else
-        return "<html><body><%= yield %></body></html>"
-      end
-    end
+    def layout(wiki)
+      layout_file = wiki.file('layout.erb') || wiki.page('layout') || static_path('/views/layout.erb')
+      layout_file.raw_data
+    end 
 
     def render_page(page_name, params)
       wiki = wiki_new
@@ -40,7 +36,7 @@ module Sites
 
       @cache.getset(key) do
         if (@page = wiki.page(page_name))
-          render :erb, @page.formatted_data, layout: get_layout(wiki)
+          render :erb, @page.formatted_data, layout: layout(wiki)
         elsif (file = wiki.file(page_name) || wiki.file(page_name + '.erb'))
           raw_data = file.raw_data
           if file.name.end_with? '.erb'
