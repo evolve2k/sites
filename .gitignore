@@ -2,3 +2,7 @@
 .env.prod
 *.git
 .elasticbeanstalk/
+.log
+.pid
+/log
+/tmp
